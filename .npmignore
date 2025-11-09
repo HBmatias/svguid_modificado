@@ -1,0 +1,19 @@
+# Arquivos de desenvolvimento
+src/
+test-lib.js
+test-lib.html
+avatar-*.svg
+
+# Configurações de build
+vite.config.js
+.github/
+
+# Arquivos Vue/Demo
+index.html
+public/
+assets/
+
+# Documentação e exemplos do projeto original
+README.md
+
+# Mantém apenas README-LIB.md que será renomeado para README.md durante publicação

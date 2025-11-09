@@ -1,13 +1,44 @@
 {
-  "name": "svguid-v1",
-  "private": true,
-  "version": "0.0.0",
+  "name": "svguid",
+  "version": "1.0.0",
+  "description": "Biblioteca para geração determinística de avatares SVG únicos baseados em strings",
   "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+  "main": "./dist/svguid.cjs.js",
+  "module": "./dist/svguid.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/svguid.es.js",
+      "require": "./dist/svguid.cjs.js"
+    }
   },
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "avatar",
+    "svg",
+    "generator",
+    "identicon",
+    "deterministic",
+    "unique",
+    "visual-identity"
+  ],
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/HBmatias/svguid_modificado.git"
+  },
+  "scripts": {
+    "dev": "BUILD_TARGET=demo vite",
+    "build": "vite build",
+    "build:demo": "BUILD_TARGET=demo vite build",
+    "preview": "vite preview",
+    "prepublishOnly": "npm run build",
+    "test": "node test-lib.js"
+  },
+  "peerDependencies": {},
   "dependencies": {
     "@guolao/vue-monaco-editor": "^1.5.1",
     "@iconify/vue": "^4.1.1",

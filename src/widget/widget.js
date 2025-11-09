@@ -1,22 +1,51 @@
 import { getColorIterator } from "./utils/colors/color.js"
-import "./avatar.js"
+import { getRandomFromObject, getRandomKeyFromObject } from "./utils/getRandomFromObject.js"
+import { mouthTypes } from './assetsTypes/mouth.js'
+import { eyeTypes } from './assetsTypes/eyes.js'
+import { eyebrowTypes } from './assetsTypes/eyebrows.js'
+import { clothesType } from './assetsTypes/clothes.js'
+import { topTypes } from './assetsTypes/top.js'
+import { accessoriesTypes } from './assetsTypes/accessories.js'
+import { facialHairTypes } from './assetsTypes/facial-hair.js'
+import { GraphicShirtTypes } from './assetsTypes/graphic-shirt.js'
+import { hairColors, skinColors, hatAndShirtColors } from './assetsTypes/colors.js'
 
 function widget(key, draw) {
-    
-    let nextColor = getColorIterator(key)
 
-    draw.rect().size(500,500).move(250,250).fill(nextColor())
-    draw.circle().size(350).move(400,325).fill(nextColor()).opacity(0.5)
-    draw.circle().size(350).move(250,325).fill(nextColor()).opacity(0.5)
-    draw.path('M25,27 C25,27 19,34.2706667 19,38.2706667 C19,41.5846667 21.686,44.2706667 25,44.2706667 C28.314,44.2706667 31,41.5846667 31,38.2706667 C31,34.2706667 25,27 25,27 Z')
+  let nextColor = getColorIterator(key)
 
-    const svgString = `
+  // Seleciona os tipos de assets aleatoriamente baseado na key
+  const topTypeValue = getRandomKeyFromObject(topTypes, key)
+  const accessoriesTypeValue = getRandomKeyFromObject(accessoriesTypes, key)
+  const facialHairTypeValue = getRandomKeyFromObject(facialHairTypes, key)
+  const clotheTypeValue = getRandomKeyFromObject(clothesType, key)
+  const eyeTypeValue = getRandomKeyFromObject(eyeTypes, key)
+  const eyebrowTypeValue = getRandomKeyFromObject(eyebrowTypes, key)
+  const mouthTypeValue = getRandomKeyFromObject(mouthTypes, key)
+  const skinColorValue = getRandomKeyFromObject(skinColors, key)
+  const graphicTypeValue = getRandomKeyFromObject(GraphicShirtTypes, key)
+
+  // Seleciona as cores
+  const hairColor = getRandomFromObject(hairColors, key)
+  const facialHairColor = getRandomFromObject(hairColors, key)
+  const topColor = getRandomFromObject(hatAndShirtColors, key)
+  const clotheColor = getRandomFromObject(hatAndShirtColors, key)
+  const circleColor = '#6fb8e0'
+
+  // Monta o SVG do avatar
+  const svgString = `
 <svg
     viewBox='0 0 264 280'
     version='1.1'
     xmlns='http://www.w3.org/2000/svg'
-    xmlns:xlink='http://www.w3.org/1999/xlink'>
-    <desc>Created with getavataaars.com</desc>
+    xmlns:xlink='http://www.w3.org/1999/xlink'
+    style='
+      --avataaar-hair-color: ${hairColor};
+      --avataaar-facial-hair-color: ${facialHairColor};
+      --avataaar-hat-color: ${topColor};
+      --avataaar-shirt-color: ${clotheColor};
+    '>
+    <desc>Created with SVGuid</desc>
     <defs>
       <circle id='path-1' cx='120' cy='120' r='120'></circle>
       <path
@@ -36,7 +65,6 @@ function widget(key, draw) {
         transform='translate(-825.000000, -1100.000000)'
         id='Avataaar/Circle'>
         <g transform='translate(825.000000, 1100.000000)'>
-        <template v-if="isCircle">
             <g
               id='Circle'
               stroke-width='1'
@@ -52,14 +80,13 @@ function widget(key, draw) {
               <g
                 id='Color/Palette/Blue-01'
                 mask='url(#mask-1)'
-                :fill="circleColor">
+                fill='${circleColor}'>
                 <rect id='🖍Color' x='0' y='0' width='240' height='240'></rect>
               </g>
             </g>
             <mask id='mask-2' fill='white'>
               <use xlink:href='#path-2' />
             </mask>
-        </template>
           <g id='Mask' />
           <g
             id='Avataaar'
@@ -71,7 +98,7 @@ function widget(key, draw) {
               <mask id='mask-silhouette' fill='white'>
                 <use xlink:href='#path-silhouette'></use>
               </mask>
-              <use :fill="skinColors[skinColorValue]" xlink:href='#path-silhouette'></use>
+              <use fill='${skinColors[skinColorValue]}' xlink:href='#path-silhouette'></use>
               <path
                 d='M156,79 L156,102 C156,132.927946 130.927946,158 100,158 C69.072054,158 44,132.927946 44,102 L44,79 L44,94 C44,124.927946 69.072054,150 100,150 C130.927946,150 156,124.927946 156,94 L156,79 Z'
                 id='Neck-Shadow'
@@ -79,28 +106,25 @@ function widget(key, draw) {
                 fill='#000000'
                 mask='url(#mask-silhouette)'></path>
             </g>
-            <svg :style="cssVars" v-html="clothesType[clotheTypeValue]"></svg>
-            <svg v-if="clotheTypeValue === 'GraphicShirt'" :style="cssVars" v-html="GraphicShirtTypes[graphicTypeValue]"></svg>
-            <svg v-html="eyeTypes[eyeTypeValue]"></svg>
-            <svg v-html="mouthTypes[mouthTypeValue]"></svg>
-            <svg v-html="eyebrowTypes[eyebrowTypeValue]"></svg>
-            <svg>
-                <g fill='black' transform='translate(76.000000, 82.000000)'>
-                    <g
-                      id='Nose/Default'
-                      transform='translate(28.000000, 40.000000)'
-                      opacity='0.16'>
-                      <path
-                        d='M16,8 C16,12.418278 21.372583,16 28,16 L28,16 C34.627417,16 40,12.418278 40,8'
-                        id='Nose'>
-
-                      </path>
-                    </g>
+            ${clothesType[clotheTypeValue]}
+            ${clotheTypeValue === 'GraphicShirt' ? GraphicShirtTypes[graphicTypeValue] : ''}
+            ${eyeTypes[eyeTypeValue]}
+            ${mouthTypes[mouthTypeValue]}
+            ${eyebrowTypes[eyebrowTypeValue]}
+            <g fill='black' transform='translate(76.000000, 82.000000)'>
+                <g
+                  id='Nose/Default'
+                  transform='translate(28.000000, 40.000000)'
+                  opacity='0.16'>
+                  <path
+                    d='M16,8 C16,12.418278 21.372583,16 28,16 L28,16 C34.627417,16 40,12.418278 40,8'
+                    id='Nose'>
+                  </path>
                 </g>
-            </svg>
-            <svg :style="cssVars" v-html="topTypes[topTypeValue]"></svg>
-            <svg :style="cssVars" v-html="facialHairTypes[facialHairTypeValue]"></svg>
-            <svg v-html="accessoriesTypes[accessoriesTypeValue]"></svg>
+            </g>
+            ${topTypes[topTypeValue]}
+            ${facialHairTypes[facialHairTypeValue]}
+            ${accessoriesTypes[accessoriesTypeValue]}
           </g>
         </g>
       </g>
@@ -108,12 +132,7 @@ function widget(key, draw) {
 </svg>
 `
 
-draw.svg(olho);
-
-    //let n = key.next() % 3
-    //draw.darwSvg(olhos[n])
-    // Descomente linha abaixo para ver exemplo 0
-    //sample(key,draw)
+  draw.svg(svgString);
 }
 
 export default widget

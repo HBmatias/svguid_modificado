@@ -30,7 +30,7 @@ function widget(key, draw) {
   const facialHairColor = getRandomFromObject(hairColors, key)
   const topColor = getRandomFromObject(hatAndShirtColors, key)
   const clotheColor = getRandomFromObject(hatAndShirtColors, key)
-  const circleColor = '#6fb8e0'
+  const circleColor = nextColor()
 
   // Monta o SVG do avatar
   const svgString = `
